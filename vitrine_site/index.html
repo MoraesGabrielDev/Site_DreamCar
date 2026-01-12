@@ -1,92 +1,200 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Museu 3D - Corrigido</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script
+      type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+    ></script>
+
     <style>
-        body { margin: 0; background: #050505; color: white; font-family: sans-serif; overflow: hidden; }
-        
-        .stage { width: 100vw; height: 100vh; position: relative; }
+      body {
+        margin: 0;
+        background: linear-gradient(135deg, #1f1f1f 0%, #0f0f0f 100%);;
+        color: #e2e0c8;
+        font-family: sans-serif;
+        overflow-x:hidden ;
+      }
 
-        /* O Swiper agora ocupa a tela toda para não deslocar o conteúdo */
-        .swiper { width: 100%; height: 100%; }
+      .stage {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+      }
 
-        /* Fazemos o título ficar FIXO em cima de tudo */
-        .car-details { 
-            position: absolute; 
-            bottom: 70px; 
-            width: 100%; 
-            text-align: center; 
-            z-index: 100; 
-            pointer-events: none; /* Isso impede que o texto atrapalhe o clique no carro */
-        }
-        .car-details h1 { font-size: 3rem; margin: 0; color: #c5a059; text-transform: uppercase; letter-spacing: 5px; }
+      /* O Swiper agora ocupa a tela toda para não deslocar o conteúdo */
+      .swiper {
+        width: 80%;
+        height: 70%;
+        top: 20%;
+      }
 
-        model-viewer { width: 100%; height: 100%; }
+      /* Fazemos o título ficar FIXO em cima de tudo */
+      .car-details {
+        font-family: "Roboto Condensed", sans-serif;
+        position: absolute;
+        bottom: 70px;
+        width: 100%;
+        text-align: center;
+        z-index: 100;
+        pointer-events: none; /* Isso impede que o texto atrapalhe o clique no carro */
+      }
+      .car-details h1 {
+        font-size: 3rem;
+         font-family: "Roboto Condensed", sans-serif;
+        margin: 0;
+        color: #bc1d1d;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+      }
 
-        /* Estilo das setas */
-        .swiper-button-next, .swiper-button-prev { color: #c5a059 !important; top: 50%; }
+      model-viewer {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        align-items: center;
+      }
+
+      /* Estilo das setas */
+      .swiper-button-next,
+      .swiper-button-prev {
+        color: #004225 !important;
+        top: 50%;
+      }
+
+     
+      .main-header {
+        border: #bc1d1d;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    width: 100%;             /* Garante que o header use a largura toda */
+    height: 150px;           /* Defina uma altura para o seu header */
+    position: absolute;      /* Para ficar por cima do conteúdo 3D */
+    top: 0;
+    left: 0;
+       
+          /* Garante que fique na frente de tudo */
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+    /* align-items não funciona em imagens, apenas em containers flex */
+}
+
+
+
+/* Overlay sutil para dar o aspecto de "baixa luminosidade" */
+
+
+
     </style>
-</head>
-<body>
+  </head>
 
-    <div class="stage">
-        <div class="car-details">
-            <h1 id="main-title">Ford GT</h1>
-            <p id="main-year">2005 • V8 Supercharged</p>
+ <header class="main-header">
+    <div class="header-content">
+        <img src="imgs/LOGO (1).png" alt="Dream Car Museum Logo" class="logo">
+    </div>
+</header>
+
+  <body>
+    <section class="capa">
+        <div class="stage">
+      <div class="car-details">
+        <h1 id="main-title">Ford GT</h1>
+        <p id="main-year">2005 • V8 Supercharged</p>
+      </div>
+
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <model-viewer
+              src="source/FordGT_2005-v2.glb"
+              camera-controls
+              shadow-intensity="2"
+              environment-image="neutral"
+              exposure="1.2"
+            ></model-viewer>
+          </div>
+
+          <div class="swiper-slide">
+            <model-viewer
+              src=""
+              camera-controls
+              shadow-intensity="2"
+              environment-image="neutral"
+              exposure="1.2"
+            ></model-viewer>
+          </div>
+
+          <div class="swiper-slide">
+            <model-viewer
+              src="source/porsche_911.glb"
+              camera-controls
+              shadow-intensity="2"
+              environment-image="neutral"
+              exposure="1.2"
+            ></model-viewer>
+          </div>
         </div>
 
-        <div class="swiper">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <model-viewer src="source/FordGT_2005-v2.glb" camera-controls shadow-intensity="2" environment-image="neutral" exposure="1.2"></model-viewer>
-                </div>
-
-                <div class="swiper-slide">
-                    <model-viewer src="" camera-controls shadow-intensity="2" environment-image="neutral" exposure="1.2"></model-viewer>
-                </div>
-                
-                <div class="swiper-slide">
-                    <model-viewer src="source/porsche_911.glb" camera-controls shadow-intensity="2" environment-image="neutral" exposure="1.2"></model-viewer>
-                </div>
-            </div>
-
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
-        </div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
-        // Dados para atualizar o texto fixo
-        const carData = [
-            { name: "Ford GT", year: "2005 • V8 Supercharged" },
-            { name: "Ferrari F40", year: "1987 • V8 Twin-Turbo" },
-            { name: "Porsche 911", year: "1973 • Carrera RS" }
-        ];
+      // Dados para atualizar o texto fixo
+      const carData = [
+        { name: "Ford GT", year: "2005 • V8 Supercharged" },
+        { name: "Ferrari F40", year: "1987 • V8 Twin-Turbo" },
+        { name: "Porsche 911", year: "1973 • Carrera RS" },
+      ];
 
-        const swiper = new Swiper('.swiper', {
-            loop: true,
-            // Desativamos o arrastar com o mouse/dedo para não brigar com o 3D
-            allowTouchMove: false, 
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            on: {
-                // Toda vez que o slide mudar, trocamos o texto fixo
-                slideChange: function () {
-                    const index = this.realIndex;
-                    document.getElementById('main-title').innerText = carData[index].name;
-                    document.getElementById('main-year').innerText = carData[index].year;
-                }
-            }
-        });
+      const swiper = new Swiper(".swiper", {
+        loop: true,
+        // Desativamos o arrastar com o mouse/dedo para não brigar com o 3D
+        allowTouchMove: false,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        on: {
+          // Toda vez que o slide mudar, trocamos o texto fixo
+          slideChange: function () {
+            const index = this.realIndex;
+            document.getElementById("main-title").innerText =
+              carData[index].name;
+            document.getElementById("main-year").innerText =
+              carData[index].year;
+          },
+        },
+      });
     </script>
-</body>
+    </section>
+    <section>
+        <div>
+            <p>oi</p>
+        </div>
+    </section>
+    <footer>
+        oi
+    </footer>
+  </body>
 </html>
