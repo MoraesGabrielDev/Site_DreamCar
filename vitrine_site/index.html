@@ -3,78 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Museu 3D - Swiper Edition</title>
-    
+    <title>Museu 3D - Corrigido</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     
     <style>
-        body { margin: 0; background: #050505; color: white; font-family: sans-serif; }
+        body { margin: 0; background: #050505; color: white; font-family: sans-serif; overflow: hidden; }
         
-        .stage { width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .stage { width: 100vw; height: 100vh; position: relative; }
 
-        /* Estilo do Container do Swiper */
-        .swiper { width: 100%; height: 80vh; }
-        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        /* O Swiper agora ocupa a tela toda para não deslocar o conteúdo */
+        .swiper { width: 100%; height: 100%; }
+
+        /* Fazemos o título ficar FIXO em cima de tudo */
+        .car-details { 
+            position: absolute; 
+            bottom: 70px; 
+            width: 100%; 
+            text-align: center; 
+            z-index: 100; 
+            pointer-events: none; /* Isso impede que o texto atrapalhe o clique no carro */
+        }
+        .car-details h1 { font-size: 3rem; margin: 0; color: #c5a059; text-transform: uppercase; letter-spacing: 5px; }
 
         model-viewer { width: 100%; height: 100%; }
 
-        .car-details { text-align: center; z-index: 10; margin-top: -60px; pointer-events: none; }
-        .car-details h1 { font-size: 2.5rem; margin: 0; color: #c5a059; text-transform: uppercase; }
-
-        /* Customizando as setas do Swiper */
-        .swiper-button-next, .swiper-button-prev { color: #c5a059 !important; }
+        /* Estilo das setas */
+        .swiper-button-next, .swiper-button-prev { color: #c5a059 !important; top: 50%; }
     </style>
 </head>
 <body>
 
     <div class="stage">
+        <div class="car-details">
+            <h1 id="main-title">Ford GT</h1>
+            <p id="main-year">2005 • V8 Supercharged</p>
+        </div>
+
         <div class="swiper">
             <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <model-viewer src="source/FordGT_2005-v2.glb" camera-controls shadow-intensity="2" environment-image="neutral" exposure="1.2"></model-viewer>
+                </div>
+
+                <div class="swiper-slide">
+                    <model-viewer src="" camera-controls shadow-intensity="2" environment-image="neutral" exposure="1.2"></model-viewer>
+                </div>
                 
                 <div class="swiper-slide">
-                    <model-viewer src="source/FordGT_2005-v2.glb" camera-controls auto-rotate shadow-intensity="2" environment-image="neutral" exposure="1.2" touch-action="pan-y"></model-viewer>
-                    <div class="car-details">
-                        <h1>Ford GT</h1>
-                        <p>2005 • V8 Supercharged</p>
-                    </div>
+                    <model-viewer src="source/porsche_911.glb" camera-controls shadow-intensity="2" environment-image="neutral" exposure="1.2"></model-viewer>
                 </div>
-
-                <div class="swiper-slide">
-                    <model-viewer src="" camera-controls auto-rotate shadow-intensity="2" environment-image="neutral" exposure="1.2" touch-action="pan-y"></model-viewer>
-                    <div class="car-details">
-                        <h1>Ferrari F40</h1>
-                        <p>1987 • V8 Twin-Turbo</p>
-                    </div>
-                </div>
-
-                <div class="swiper-slide">
-                    <model-viewer src="source/porsche_911.glb" camera-controls auto-rotate shadow-intensity="2" environment-image="neutral" exposure="1.2" touch-action="pan-y"></model-viewer>
-                    <div class="car-details">
-                        <h1>Porsche 911</h1>
-                        <p>1973 • Carrera RS</p>
-                    </div>
-                </div>
-
             </div>
 
             <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
-            <div class="swiper-pagination"></div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
-        // Inicialização correta do Swiper
+        // Dados para atualizar o texto fixo
+        const carData = [
+            { name: "Ford GT", year: "2005 • V8 Supercharged" },
+            { name: "Ferrari F40", year: "1987 • V8 Twin-Turbo" },
+            { name: "Porsche 911", year: "1973 • Carrera RS" }
+        ];
+
         const swiper = new Swiper('.swiper', {
-            loop: true, // Carrossel infinito
-            pagination: { el: '.swiper-pagination', clickable: true },
+            loop: true,
+            // Desativamos o arrastar com o mouse/dedo para não brigar com o 3D
+            allowTouchMove: false, 
             navigation: {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
+            on: {
+                // Toda vez que o slide mudar, trocamos o texto fixo
+                slideChange: function () {
+                    const index = this.realIndex;
+                    document.getElementById('main-title').innerText = carData[index].name;
+                    document.getElementById('main-year').innerText = carData[index].year;
+                }
+            }
         });
     </script>
 </body>
