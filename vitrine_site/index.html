@@ -3,132 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Museu Digital - Classic Cars</title>
+    <title>Museu 3D - Swiper Edition</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    
     <style>
-        :root {
-            --gold: #c5a059;
-            --dark: #0a0a0a;
-            --light: #f4f4f4;
-        }
+        body { margin: 0; background: #050505; color: white; font-family: sans-serif; }
+        
+        .stage { width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            background-color: var(--dark);
-            color: var(--light);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
+        /* Estilo do Container do Swiper */
+        .swiper { width: 100%; height: 80vh; }
+        .swiper-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-        /* Container do Carro 360 */
-        .museum-stage {
-            width: 100vw;
-            height: 80vh;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        model-viewer { width: 100%; height: 100%; }
 
-        model-viewer {
-            width: 100%;
-            height: 100%;
-            outline: none;
-        }
+        .car-details { text-align: center; z-index: 10; margin-top: -60px; pointer-events: none; }
+        .car-details h1 { font-size: 2.5rem; margin: 0; color: #c5a059; text-transform: uppercase; }
 
-        /* Informações Sobrepostas */
-        .car-info {
-            position: absolute;
-            left: 5%;
-            top: 20%;
-            max-width: 300px;
-            z-index: 10;
-        }
-
-        .car-info h1 {
-            font-size: 3rem;
-            margin: 0;
-            color: var(--gold);
-            text-transform: uppercase;
-        }
-
-        .specs {
-            margin-top: 20px;
-            border-left: 2px solid var(--gold);
-            padding-left: 15px;
-        }
-
-        /* Carrossel de Miniaturas */
-        .collection-grid {
-            height: 20vh;
-            display: flex;
-            gap: 20px;
-            padding: 20px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            justify-content: center;
-        }
-
-        .thumb {
-            width: 150px;
-            height: 80px;
-            border: 1px solid #333;
-            cursor: pointer;
-            transition: 0.3s;
-            filter: grayscale(100%);
-            object-fit: cover;
-        }
-
-        .thumb:hover, .thumb.active {
-            border-color: var(--gold);
-            filter: grayscale(0%);
-            transform: translateY(-5px);
-        }
+        /* Customizando as setas do Swiper */
+        .swiper-button-next, .swiper-button-prev { color: #c5a059 !important; }
     </style>
 </head>
 <body>
 
-    <section class="museum-stage">
-        <div class="car-info">
-            <h1 id="car-name">Ferrari F40</h1>
-            <div class="specs">
-                <p><strong>ANO:</strong> <span id="car-year">1987</span></p>
-                <p><strong>MOTOR:</strong> <span id="car-engine">V8 Twin-Turbo</span></p>
+    <div class="stage">
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                
+                <div class="swiper-slide">
+                    <model-viewer src="source/FordGT_2005-v2.glb" camera-controls auto-rotate shadow-intensity="2" environment-image="neutral" exposure="1.2" touch-action="pan-y"></model-viewer>
+                    <div class="car-details">
+                        <h1>Ford GT</h1>
+                        <p>2005 • V8 Supercharged</p>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <model-viewer src="" camera-controls auto-rotate shadow-intensity="2" environment-image="neutral" exposure="1.2" touch-action="pan-y"></model-viewer>
+                    <div class="car-details">
+                        <h1>Ferrari F40</h1>
+                        <p>1987 • V8 Twin-Turbo</p>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <model-viewer src="source/porsche_911.glb" camera-controls auto-rotate shadow-intensity="2" environment-image="neutral" exposure="1.2" touch-action="pan-y"></model-viewer>
+                    <div class="car-details">
+                        <h1>Porsche 911</h1>
+                        <p>1973 • Carrera RS</p>
+                    </div>
+                </div>
+
             </div>
+
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-pagination"></div>
         </div>
-
-        <model-viewer 
-            id="main-viewer"
-            src="source/FordGT_2005-v2.glb" 
-            alt="Carro do Museu"
-            auto-rotate 
-            camera-controls
-            shadow-intensity="2"
-            exposure="1">
-        </model-viewer>
-    </section>
-
-    <div class="collection-grid">
-        <img src="thumb1.jpg" class="thumb active" onclick="changeCar('Ferrari F40', '1987', 'V8', 'link_da_ferrari.glb', this)">
-        <img src="thumb2.jpg" class="thumb" onclick="changeCar('Porsche 911', '1974', 'Flat-6', 'link_do_porsche.glb', this)">
-        <img src="thumb3.jpg" class="thumb" onclick="changeCar('Mustang GT', '1967', 'V8', 'link_do_mustang.glb', this)">
     </div>
 
-    <script>
-        function changeCar(name, year, engine, modelPath, element) {
-            // Atualiza Textos
-            document.getElementById('car-name').innerText = name;
-            document.getElementById('car-year').innerText = year;
-            document.getElementById('car-engine').innerText = engine;
-            
-            // Atualiza o Modelo 3D
-            const viewer = document.getElementById('main-viewer');
-            viewer.src = modelPath;
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-            // Atualiza borda da miniatura
-            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-            element.classList.add('active');
-        }
+    <script>
+        // Inicialização correta do Swiper
+        const swiper = new Swiper('.swiper', {
+            loop: true, // Carrossel infinito
+            pagination: { el: '.swiper-pagination', clickable: true },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
     </script>
 </body>
 </html>
