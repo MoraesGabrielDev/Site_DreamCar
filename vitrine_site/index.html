@@ -1,200 +1,394 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Museu 3D - Corrigido</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-    />
-
+    <title>Museu 3D - Dream Car</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script
-      type="module"
-      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
-    ></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+    
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
     <style>
-      body {
-        margin: 0;
-        background: linear-gradient(135deg, #1f1f1f 0%, #0f0f0f 100%);;
-        color: #e2e0c8;
-        font-family: sans-serif;
-        overflow-x:hidden ;
-      }
+        /* --- CONFIGURAÇÕES GERAIS --- */
+        body {
+            margin: 0;
+            background: linear-gradient(180deg, #f6f4ea 0%, #e9e6d0 40%, #e2e0c8 100%);
+            color: #111;
+            font-family: "Google Sans", sans-serif;
+            overflow-x: hidden;
+        }
 
-      .stage {
-        width: 100vw;
-        height: 100vh;
-        position: relative;
-      }
+       /* ==============================
+   CAPA / HERO
+============================== */
 
-      /* O Swiper agora ocupa a tela toda para não deslocar o conteúdo */
-      .swiper {
-        width: 80%;
-        height: 70%;
-        top: 20%;
-      }
-
-      /* Fazemos o título ficar FIXO em cima de tudo */
-      .car-details {
-        font-family: "Roboto Condensed", sans-serif;
-        position: absolute;
-        bottom: 70px;
-        width: 100%;
-        text-align: center;
-        z-index: 100;
-        pointer-events: none; /* Isso impede que o texto atrapalhe o clique no carro */
-      }
-      .car-details h1 {
-        font-size: 3rem;
-         font-family: "Roboto Condensed", sans-serif;
-        margin: 0;
-        color: #bc1d1d;
-        text-transform: uppercase;
-        letter-spacing: 5px;
-      }
-
-      model-viewer {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        align-items: center;
-      }
-
-      /* Estilo das setas */
-      .swiper-button-next,
-      .swiper-button-prev {
-        color: #004225 !important;
-        top: 50%;
-      }
-
-     
-      .main-header {
-        border: #bc1d1d;
+section.capa {
+    position: relative;
+    margin-top: -50px;
+    min-height: 100vh;
+    overflow: hidden;
     display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center;     /* Centraliza verticalmente */
-    width: 100%;             /* Garante que o header use a largura toda */
-    height: 150px;           /* Defina uma altura para o seu header */
-    position: absolute;      /* Para ficar por cima do conteúdo 3D */
-    top: 0;
-    left: 0;
-       
-          /* Garante que fique na frente de tudo */
+    align-items: center;
+    justify-content: center;
 }
 
-.logo {
-    width: 150px;
-    height: auto;
-    /* align-items não funciona em imagens, apenas em containers flex */
+/* Fundo com blur */
+section.capa::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("imgs/img_fundo.png") center / cover no-repeat;
+    filter: blur(11px) brightness(0.9) saturate(1.0);
+    transform: scale(1.1);
+    z-index: 0;
+}
+
+/* Overlay de identidade (museu) */
+section.capa::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 50% 55%,
+      rgba(255,255,255,.30) 0%,
+      rgba(255,255,255,.12) 38%,
+      rgba(10,25,18,.65) 100%
+    );
+  z-index:1;
 }
 
 
+/* Tudo que estiver dentro da capa */
+section.capa > * {
+    position: relative;
+    z-index: 2;
+}
 
-/* Overlay sutil para dar o aspecto de "baixa luminosidade" */
+/* ==============================
+   SWIPER
+============================== */
 
+.swiper {
+    width: 100%;
+    max-width: 1200px;
+    padding: 80px 40px;
+}
 
+.swiper-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    text-align: center;
+}
 
+/* Carro */
+.swiper-slide img {
+    max-width: 700px;
+    width: 100%;
+    filter: drop-shadow(0 40px 60px rgba(0,0,0,0.35));
+}
+
+/* Texto estilo exposição */
+.swiper-slide .info h1 {
+    font-size: 64px;
+    letter-spacing: 0.2em;
+    color: #b31c1c;
+    margin: 0;
+}
+
+.swiper-slide .info p {
+    font-size: 14px;
+    letter-spacing: 0.3em;
+    color: #333;
+    margin: 0;
+}
+
+/* ==============================
+   BOTÕES DO SWIPER
+============================== */
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: #1e4d32;
+}
+
+/* ==============================
+   RESPONSIVO
+============================== */
+
+@media (max-width: 768px) {
+    .swiper-slide img {
+        max-width: 90%;
+    }
+
+    .swiper-slide .info h1 {
+        font-size: 42px;
+    }
+
+    section.capa::before {
+        filter: blur(5px) brightness(0.95);
+    }
+}
+
+        /* --- HEADER COM MAIS HARMONIA --- */
+        .main-header {
+            width: 100%;
+            height: 110px; /* Leve aumento para a logo respirar */
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 66, 37, 0.97);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            padding: 0 40px;
+            box-sizing: border-box;
+        }
+
+        .header-content {
+            position: absolute;
+            left: 70px; /* Logo mais afastada da borda */
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 140px; 
+            height: auto;
+            transition: transform .3s ease;
+        }
+
+        .main-header:hover .logo {
+            transform: scale(1.05);
+        }
+
+        /* --- LINKS CENTRALIZADOS --- */
+        nav.header-links {
+            display: flex;
+            gap: 45px; /* Mais espaço entre os itens */
+        }
+
+        .header-links a {
+            color: #e2e0c8;
+            text-decoration: none;
+            font-family: "Roboto Condensed", sans-serif;
+            font-size: 1.05rem;
+            font-weight: 180px;
+            letter-spacing: 2.5px;
+            position: relative;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+        }
+
+        /* HOVER: LINHA CRESCE DA ESQUERDA PARA DIREITA */
+        .header-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #e2e0c8;
+            transition: width 0.3s ease;
+        }
+
+        .header-links a:hover {
+            color: #ffffff;
+        }
+
+        .header-links a:hover::after {
+            width: 100%;
+        }
+
+        /* --- STAGE E SWIPER --- */
+        .stage {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 100px; 
+        }
+
+        .swiper {
+            width: min(1150px, 92%);
+            height: min(750px, 75vh);
+            border-radius: 24px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.05) 100%);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url(imgs/img_fundo.png) blur;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            outline: none;
+        }
+
+        /* --- TÍTULOS DOS CARROS (HARMONIZADOS) --- */
+        .car-details {
+            font-family: "Roboto Condensed", sans-serif;
+            position: absolute;
+            bottom: 100px; /* Subi de 70px para 100px para dar respiro */
+            width: 100%;
+            text-align: center;
+            z-index: 300;
+            pointer-events: none;
+        }
+
+        .car-details h1 {
+            font-size: 3.8rem;
+            margin: 0;
+            color: #bc1d1d;
+            text-transform: uppercase;
+            letter-spacing: 12px; /* Visual de exposição luxuosa */
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .car-details p {
+            margin: 8px 0 0 0;
+            color:#e2e0c8;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        /* --- BOTÕES DE NAVEGAÇÃO RECUPERADOS --- */
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #004225 !important;
+            top: 50%;
+            background: #ffffff;
+            border-radius: 12px;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            margin-top: -22px;
+            z-index: 10;
+        }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.18);
+            background-color: #ffffff;
+        }
+
+        
+
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 768px) {
+            .main-header { height: 80px; padding: 0 20px; justify-content: flex-end; }
+            .header-content { left: 20px; }
+            .logo { width: 100px; }
+            nav.header-links { gap: 15px; }
+            .header-links a { font-size: 0.85rem; letter-spacing: 1px; }
+            .car-details h1 { font-size: 2rem; letter-spacing: 4px; }
+            .car-details { bottom: 60px; }
+            .swiper { height: 55vh; }
+        }
     </style>
-  </head>
+</head>
+<body>
 
- <header class="main-header">
-    <div class="header-content">
-        <img src="imgs/LOGO (1).png" alt="Dream Car Museum Logo" class="logo">
-    </div>
-</header>
+    <header class="main-header">
+        <div class="header-content">
+            <img src="imgs/LOGO (1).png" alt="Dream Car Logo" class="logo">
+        </div>
+        <nav class="header-links">
+            <a href="#">Nosso acervo</a>
+            <a href="#">Destaques</a>
+            <a href="#">Temáticos</a>
+        </nav>
+    </header>
 
-  <body>
     <section class="capa">
         <div class="stage">
-      <div class="car-details">
-        <h1 id="main-title">Ford GT</h1>
-        <p id="main-year">2005 • V8 Supercharged</p>
-      </div>
+            <div class="car-details">
+                <h1 id="main-title">Ford GT</h1>
+                <p id="main-year">2005 V8 Supercharged</p>
+            </div>
 
-      <div class="swiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <model-viewer
-              src="source/FordGT_2005-v2.glb"
-              camera-controls
-              shadow-intensity="2"
-              environment-image="neutral"
-              exposure="1.2"
-            ></model-viewer>
-          </div>
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <model-viewer src="source/FordGT_2005-v2.glb" camera-controls auto-rotate shadow-intensity="2" environment-image="neutral" exposure="1.2"></model-viewer>
+                    </div>
+                    <div class="swiper-slide">
+                        <model-viewer src="source/ferrari_f40.glb" camera-controls auto-rotate shadow-intensity="2"></model-viewer>
+                    </div>
+                    <div class="swiper-slide">
+                        <model-viewer src="source/porsche_911.glb" camera-controls auto-rotate shadow-intensity="2"></model-viewer>
+                    </div>
+                </div>
 
-          <div class="swiper-slide">
-            <model-viewer
-              src=""
-              camera-controls
-              shadow-intensity="2"
-              environment-image="neutral"
-              exposure="1.2"
-            ></model-viewer>
-          </div>
-
-          <div class="swiper-slide">
-            <model-viewer
-              src="source/porsche_911.glb"
-              camera-controls
-              shadow-intensity="2"
-              environment-image="neutral"
-              exposure="1.2"
-            ></model-viewer>
-          </div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
         </div>
-
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-      </div>
-    </div>
+    </section>
+    <footer>
+      oi
+      oi
+      oi
+      oi
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
-      // Dados para atualizar o texto fixo
-      const carData = [
-        { name: "Ford GT", year: "2005 • V8 Supercharged" },
-        { name: "Ferrari F40", year: "1987 • V8 Twin-Turbo" },
-        { name: "Porsche 911", year: "1973 • Carrera RS" },
-      ];
+        const carData = [
+            { name: "Ford GT", year: "2005 V8 Supercharged" },
+            { name: "Ferrari F40", year: "1987 V8 Twin-Turbo" },
+            { name: "Porsche 911", year: "1973 Carrera RS" },
+        ];
 
-      const swiper = new Swiper(".swiper", {
-        loop: true,
-        // Desativamos o arrastar com o mouse/dedo para não brigar com o 3D
-        allowTouchMove: false,
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-        on: {
-          // Toda vez que o slide mudar, trocamos o texto fixo
-          slideChange: function () {
-            const index = this.realIndex;
-            document.getElementById("main-title").innerText =
-              carData[index].name;
-            document.getElementById("main-year").innerText =
-              carData[index].year;
-          },
-        },
-      });
+        const swiper = new Swiper(".swiper", {
+            loop: true,
+            speed: 800,
+            allowTouchMove: false,
+            grabCursor: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            on: {
+                slideChange: function () {
+                    const index = this.realIndex;
+                    document.getElementById("main-title").innerText = carData[index].name;
+                    document.getElementById("main-year").innerText = carData[index].year;
+                },
+            },
+        });
     </script>
-    </section>
-    <section>
-        <div>
-            <p>oi</p>
-        </div>
-    </section>
-    <footer>
-        oi
-    </footer>
-  </body>
+</body>
 </html>
